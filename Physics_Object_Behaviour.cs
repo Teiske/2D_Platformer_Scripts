@@ -10,7 +10,7 @@ public class Physics_Object_Behaviour : MonoBehaviour {
     protected bool grounded;
     protected Vector2 ground_Normal;
 
-    protected Vector2 targert_Velocity;
+    protected Vector2 target_Velocity;
     protected Rigidbody2D Rigidbody2D;
     protected Vector2 velocity;
     protected ContactFilter2D ContactFilter2D;
@@ -31,19 +31,23 @@ public class Physics_Object_Behaviour : MonoBehaviour {
         ContactFilter2D.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
         ContactFilter2D.useLayerMask = true;
     }
-
     void Update() {
-        
+        target_Velocity = Vector2.zero;
+        ComputeVelocity();
+    }
+
+    protected virtual void ComputeVelocity() {
+
     }
 
     void FixedUpdate() {
 
         velocity += gravity_Modifier * Physics2D.gravity * Time.deltaTime;
-        velocity.x = targert_Velocity.x;
+        velocity.x = target_Velocity.x;
         grounded = false;
         Vector2 deltaPosition = velocity * Time.deltaTime;
         Vector2 move_Along_Ground = new Vector2(ground_Normal.y, -ground_Normal.x);
-        Vector2 move = Vector2.up * deltaPosition.y;
+        Vector2 move = move_Along_Ground * deltaPosition.x;
 
         Movement(move, false);
         move = Vector2.up * deltaPosition.y;
@@ -78,7 +82,7 @@ public class Physics_Object_Behaviour : MonoBehaviour {
                 float projection = Vector2.Dot(velocity, current_Normal);
                 if (projection < 0) {
 
-                    velocity = velocity - projection * current_Normal;
+                    velocity -= projection * current_Normal;
                 }
 
                 float modified_Distance = hit_Buffer_List[i].distance - shell_Radius;
@@ -86,6 +90,6 @@ public class Physics_Object_Behaviour : MonoBehaviour {
             }
         }
 
-        Rigidbody2D.position = Rigidbody2D.position + move.normalized * distance;
+        Rigidbody2D.position += move.normalized * distance;
     }
 }
