@@ -16,7 +16,8 @@ public class Physics_Object_Behaviour : MonoBehaviour {
     protected ContactFilter2D ContactFilter2D;
     protected RaycastHit2D[] hit_Buffer = new RaycastHit2D[16];
     protected List<RaycastHit2D> hit_Buffer_List = new List<RaycastHit2D>(16);
-
+    private int whatIsGround;
+    private float slopeFriction;
     protected const float min_Move_Distance = 0.001f;
     protected const float shell_Radius = 0.01f;
 
@@ -44,7 +45,9 @@ public class Physics_Object_Behaviour : MonoBehaviour {
 
         velocity += gravity_Modifier * Physics2D.gravity * Time.deltaTime;
         velocity.x = target_Velocity.x;
+
         grounded = false;
+        Debug.Log(grounded);
         Vector2 deltaPosition = velocity * Time.deltaTime;
         Vector2 move_Along_Ground = new Vector2(ground_Normal.y, -ground_Normal.x);
         Vector2 move = move_Along_Ground * deltaPosition.x;
@@ -52,6 +55,8 @@ public class Physics_Object_Behaviour : MonoBehaviour {
         Movement(move, false);
         move = Vector2.up * deltaPosition.y;
         Movement(move, true);
+
+        NormalizeSlope();
     }
 
     void Movement(Vector2 move, bool yMovement) {
@@ -91,5 +96,24 @@ public class Physics_Object_Behaviour : MonoBehaviour {
         }
 
         Rigidbody2D.position += move.normalized * distance;
+    }
+
+    void NormalizeSlope() {
+        // Attempt vertical normalization
+        if (grounded) {
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, 1f, whatIsGround);
+
+            if (hit.collider != null && Mathf.Abs(hit.normal.x) > 0.1f) {
+                Rigidbody2D body = GetComponent<Rigidbody2D>();
+                // Apply the opposite force against the slope force 
+                // You will need to provide your own slopeFriction to stabalize movement
+                body.velocity = new Vector2(body.velocity.x - (hit.normal.x * slopeFriction), body.velocity.y);
+
+                //Move Player up or down to compensate for the slope below them
+                Vector3 pos = transform.position;
+                pos.y += -hit.normal.x * Mathf.Abs(body.velocity.x) * Time.deltaTime * (body.velocity.x - hit.normal.x > 0 ? 1 : -1);
+                transform.position = pos;
+            }
+        }
     }
 }
