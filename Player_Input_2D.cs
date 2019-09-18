@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Controller_2D))]
-public class Player_Input : MonoBehaviour {
+public class Player_Input_2D : MonoBehaviour {
    
     [SerializeField]
     float moveSpeed = 6f;
