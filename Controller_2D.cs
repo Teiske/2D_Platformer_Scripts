@@ -18,7 +18,7 @@ public class Controller_2D : Raycast_Controller_2D {
         
     }
 
-    public void Move(Vector3 velocity) {
+    public void Move(Vector3 velocity, bool standingOnPlatform = false) {
         UpdateRaycastOrigins();
         collisions.Reset();
         collisions.velocityOld = velocity;
@@ -35,6 +35,10 @@ public class Controller_2D : Raycast_Controller_2D {
         }
 
         transform.Translate(velocity);
+
+        if (standingOnPlatform) {
+            collisions.below = true;
+        }
     }
 
     void HorizontalCollisions(ref Vector3 velocity) {
@@ -49,6 +53,10 @@ public class Controller_2D : Raycast_Controller_2D {
             Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength, Color.red);
 
             if (hit) {
+
+                if (hit.distance == 0) {
+                    continue;
+                }
 
                 float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
 
