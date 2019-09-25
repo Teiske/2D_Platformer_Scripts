@@ -6,8 +6,6 @@ public class Pressure_Plate_Controller_2D : Raycast_Controller_2D {
 
     public LayerMask weightMask;
 
-    //public Physics_Controller_2D physics_Controller_2D;
-
     //void Start() {
         
     //}
