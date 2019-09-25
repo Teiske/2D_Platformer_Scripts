@@ -40,10 +40,10 @@ public class Raycast_Controller_2D : MonoBehaviour {
         bounds.Expand(skinWidth * -2);
 
         horizontalRayCount = Mathf.Clamp(horizontalRayCount, 2, int.MaxValue);
-        verticalRayCount = Mathf.Clamp(verticalRayCount, 2, int.MaxValue);
+        verticalRayCount   = Mathf.Clamp(verticalRayCount, 2, int.MaxValue);
 
         horizontalRaySpacing = bounds.size.y / (horizontalRayCount - 1);
-        verticalRaySpacing = bounds.size.x / (verticalRayCount - 1);
+        verticalRaySpacing   = bounds.size.x / (verticalRayCount   - 1);
     }
 
     public struct RaycastOrigins {
