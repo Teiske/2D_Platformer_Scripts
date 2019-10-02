@@ -11,8 +11,7 @@ public class Physics_Controller_2D : Raycast_Controller_2D {
     [HideInInspector]
     public Vector2 playerInput;
 
-    public override void Start() {
-        base.Start();
+    void Start() {
         collisions.faceDir = 1;
     }
 

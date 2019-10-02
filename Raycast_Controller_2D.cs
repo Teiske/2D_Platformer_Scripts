@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D))]
 public class Raycast_Controller_2D : MonoBehaviour {
+
+    private Enemy_Controller_2D enemy_Controller_2D;
+
     public LayerMask collisionMask;
 
     public const float skinWidth = .015f;
@@ -20,22 +22,24 @@ public class Raycast_Controller_2D : MonoBehaviour {
     [HideInInspector]
     public RaycastOrigins raycastOrigins;
 
-    public virtual void Awake() {
+    public bool enemy_Hit;
+
+    public void Awake() {
         boxCollider_2D = GetComponent<BoxCollider2D>();
     }
 
-    public virtual void Start() {
-        CalculateRaySpacing();
-    }
+    //public virtual void Start() {
+    //    CalculateRaySpacing();
+    //}
 
     public void UpdateRaycastOrigins() {
         Bounds bounds = boxCollider_2D.bounds;
         bounds.Expand(skinWidth * -2);
 
-        raycastOrigins.bottomLeft = new Vector2(bounds.min.x, bounds.min.y);
+        raycastOrigins.bottomLeft  = new Vector2(bounds.min.x, bounds.min.y);
         raycastOrigins.bottomRight = new Vector2(bounds.max.x, bounds.min.y);
-        raycastOrigins.topLeft = new Vector2(bounds.min.x, bounds.max.y);
-        raycastOrigins.topRight = new Vector2(bounds.max.x, bounds.max.y);
+        raycastOrigins.topLeft     = new Vector2(bounds.min.x, bounds.max.y);
+        raycastOrigins.topRight    = new Vector2(bounds.max.x, bounds.max.y);
     }
 
     public void CalculateRaySpacing() {
@@ -47,6 +51,23 @@ public class Raycast_Controller_2D : MonoBehaviour {
 
         horizontalRaySpacing = bounds.size.y / (horizontalRayCount - 1);
         verticalRaySpacing   = bounds.size.x / (verticalRayCount   - 1);
+    }
+
+    public void PlayerRayCast() {
+        float rayLength = 0.5f;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, rayLength);
+        Debug.DrawRay(transform.position, Vector2.down * rayLength, Color.cyan);
+        if (hit != null && hit.collider != null && hit.distance < 0.9f && hit.collider.tag == "Enemy") {
+            gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * 500f);
+            Debug.Log("Squiched Enemy");
+            enemy_Controller_2D.move = false;
+            Debug.Log(enemy_Controller_2D.move);
+        }
+        
+    }
+
+    public void EnemyRayCast() {
+        
     }
 
     public struct RaycastOrigins {

@@ -22,8 +22,7 @@ public class Platfrom_Controller_2D : Raycast_Controller_2D {
     List<PassengerMovement> passengerMovement;
     Dictionary<Transform, Physics_Controller_2D> passengerDictionary = new Dictionary<Transform, Physics_Controller_2D>(); 
 
-    public override void Start() {
-        base.Start();
+    void Start() {
 
         globalWaypoints = new Vector3[localWaypoints.Length];
         for (int i = 0; i < localWaypoints.Length; i++) {
