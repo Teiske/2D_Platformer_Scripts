@@ -36,7 +36,8 @@ public class Enemy_Controller_2D : Raycast_Controller_2D {
         if (hit.distance < 0.7f) {
             FlipEnemy();
             if (hit.collider.tag == "Player") {
-                Debug.Log("Enemy hits player"); StartCoroutine("KillPlayer");
+                Debug.Log("Enemy hits player");
+                StartCoroutine("KillPlayer");
             }
         }
     }

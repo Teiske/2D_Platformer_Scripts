@@ -59,9 +59,9 @@ public class Raycast_Controller_2D : MonoBehaviour {
         Debug.DrawRay(transform.position, Vector2.down * rayLength, Color.cyan);
         if (hit != null && hit.collider != null && hit.distance < 0.9f && hit.collider.tag == "Enemy") {
             gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * 500f);
-            Debug.Log("Squiched Enemy");
-            enemy_Controller_2D.move = false;
+            GameObject.Find("Enemy_1").GetComponent<Enemy_Controller_2D>().move = false;
             Debug.Log(enemy_Controller_2D.move);
+            Debug.Log("Squiched Enemy");
         }
         
     }
