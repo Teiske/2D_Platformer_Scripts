@@ -35,7 +35,8 @@ public class Pressure_Plate_Controller_2D : MonoBehaviour {
     }
 
     void OnTriggerExit2D(Collider2D collider_2D) {
-        StopCoroutine("MoveDoor"); 
+        StopCoroutine("MoveDoor");
+        StartCoroutine("WaitTime");
     }
     
     IEnumerator MoveDoor(Vector2 end_Position) {
@@ -49,6 +50,7 @@ public class Pressure_Plate_Controller_2D : MonoBehaviour {
     }
 
     IEnumerator WaitTime() {
+        Debug.Log("Counter started");
         yield return new WaitForSeconds(time_Left);
         StartCoroutine("MoveDoor", closed_Position);
     }
