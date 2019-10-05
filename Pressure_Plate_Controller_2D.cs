@@ -11,16 +11,14 @@ public class Pressure_Plate_Controller_2D : MonoBehaviour {
 
     [SerializeField]
     private float time_Left;
-
+    [SerializeField]
     private float door_Move;
+    [SerializeField]
     private float door_Speed;
 
     private Vector2 closed_Position;
 
     void Start() {
-        door_Move  = -4.5f;
-        door_Speed = 3f;
-
         closed_Position = door.transform.position;
     }
 

@@ -27,22 +27,7 @@ public class Enemy_Controller_2D : Raycast_Controller_2D {
         else if (move == false) {
             StartCoroutine("WaitForMove");
         }
-        //EnemyRayCast();
     }
-
-    //public void EnemyMove() {
-    //    float rayLength = 0.7f;
-    //    RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(x_Move_Dir, 0));
-    //    Debug.DrawRay(transform.position, Vector2.right * x_Move_Dir * rayLength, Color.cyan);
-    //    gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(x_Move_Dir * enemy_Speed, 0); gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(x_Move_Dir * enemy_Speed, 0);
-    //    if (hit.distance < 0.7f) {
-    //        FlipEnemy();
-    //        if (hit.collider.tag == "Player") {
-    //            Debug.Log("Enemy hits player");
-    //            StartCoroutine("KillPlayer");
-    //        }
-    //    }
-    //}
 
     public void FlipEnemy() {
         if (x_Move_Dir > 0) {
@@ -74,7 +59,7 @@ public class Enemy_Controller_2D : Raycast_Controller_2D {
     }
 
     public IEnumerator KillPlayer() {
-        SceneManager.LoadScene("Test_Scene");
+        Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
         yield return null;
     }
 }
